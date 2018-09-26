@@ -22,8 +22,6 @@ Vue.component('x-model', {
             this.done = done;
             this.active = true;
             this.$nextTick(() => this.$refs.output.focus())
-            console.log(this.$refs.output);
-            console.log(this.$refs.output.$el)
         }
     },
     template: '#model'

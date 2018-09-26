@@ -26,11 +26,13 @@
             </div>
             <div class="item center selectable" style="background-color: #27ae60; color: #f2f2f2;" @click="onCollectionCreate">Create New</div>
         </div>
+
+
         <div class="main-view">
             <div v-if="this.collection">
                 <div class="filters-box">
-                    <input type="text" placeholder="Set Filters...." v-model="filters" @keydown.enter.prevent="onFilter" ref="filter">
-                    <input type="submit" @click="onFilter" value="Set">
+                    <input type="search" placeholder="Looking For..." v-model="query" @keydown.enter.prevent="Pager">
+                    <input type="submit" @click="Pager" value="Search">
                 </div>
                 <div class="arrows">
                     <span class="arrow-left" @click="DecPage" v-if="pages"></span>
@@ -44,11 +46,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 
 
     <!-- grid template -->

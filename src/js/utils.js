@@ -1,77 +1,44 @@
 // consts
 const uuid = require('uuid');
-// const uuid = function () {
-//     return Date.now();
-//}
+const fs = require('fs');
+const { ipcRenderer } = require('electron');
 
 const version = '1.0.0';
+const storePath = __dirname + '/store.json';
 
 // utils object
 const utils = new Vue({
     methods: {
-        fakeStore: function () {
-            // create fake store object for development
-            return {
-                version: '1.0.0',
-                settings: {
-                    cols: 3,
-                    client_id: ''
-                },
-                collections: [
-                    {
-                        id: uuid(),
-                        name: 'My New Collection',
-                        filters: [{keyword: 'sun'}],
-                        images: [
-                            // {
-                            //     id: uuid(),
-                            //     url: './images/1.jpg',
-                            //     selected: true,
-                            //     compile: true
-                            // },
-                            // {
-                            //     id: uuid(),
-                            //     url: './images/2.jpg',
-                            //     selected: true,
-                            //     compile: true
-                            // },
-                            // {
-                            //     id: uuid(),
-                            //     url: './images/3.jpg',
-                            //     selected: true,
-                            //     compile: true
-                            // },
-                            // {
-                            //     id: uuid(),
-                            //     url: './images/4.jpg',
-                            //     selected: true,
-                            //     compile: true
-                            // }
-                        ]
-                    }
-                ]
-            };
-        },
         initStore: function () {
-            // create init store object
             return {
-                client_id: '', version, collections: [], settings: {}
+                version, collections: [], settings: { cols: 3, client_id: '' }
             }
         },
         load: function () {
-            // if store not exists
-            // create init store then save it as new
-            // else save to the exists one
+            var store = this.initStore();
+            if (fs.existsSync(storePath)) {
+                try {
+                    var data = fs.readFileSync(storePath, 'utf-8');
+                    data = JSON.parse(data);
+                    return data;
+                } catch(e) {
+                }
+            }
+            return this.save(store);
         },
-        save: function () {
-            // save store to file if state is ready
-            // if not ready throw error
+        save: function (data = {}) {
+            try {
+                jd = JSON.stringify(data);
+                fs.writeFileSync(storePath, jd, 'utf-8');
+                return data;
+            } catch(e) {
+                alert('can not save data!');
+                ipcRenderer.send('quit-app');
+            }
+            return null;
         },
         initCollection: function (name = 'New Collection') {
-            return{
-                id: uuid(),
-                name, images: [], filters: []
-            };
+            return{ id: uuid(), name, images: [] };
         },
         buffer2base64: function (buffer) {
             buffer = new Uint8Array(buffer);
@@ -81,33 +48,6 @@ const utils = new Vue({
                 data += String.fromCharCode(c);
             }
             return btoa(data);
-        },
-        writeFilters: function (filters = []) {
-            var t = "";
-            filters.forEach(f => {
-                if (f.collection) t += '@' + f + ', ';
-                else t += f.keyword + ', ';
-            });
-            if (t.endsWith(', ')) t = t.substring(0, t.length - 2);
-            return t;
-        },
-        readFilters: function (filters = '') {
-            var data = filters.trim().split(',');
-            var list = [];
-            var keywords = [];
-            var collections = [];
-            data.forEach(f => {
-                f = f.trim();
-                if (f.startsWith('@')) {
-                    var k = f.substring(1, f.length - 1);
-                    list.push({collection: k});
-                    collections.push(k);
-                } else {
-                    list.push({keyword: f});
-                    keywords.push(f);
-                }
-            });
-            return {filters: list, keywords, collections};
         }
     }
 });
@@ -155,7 +95,7 @@ const Server = {
         downloader.stopAll();
         const images = [];
         var pages = 0;
-        API('https://api.unsplash.com/search/photos?orientation=landscape&per_page=20&page=' + page + '&' + query + '&client_id=' + id)
+        API('https://api.unsplash.com/search/photos?orientation=landscape&per_page=20&page=' + page + '&query=' + query + '&client_id=' + id)
         .then(xhr => {
             var json = xhr.toJSON()
             pages = json['total_pages'];
@@ -171,7 +111,13 @@ const Server = {
             });
             cb(images, pages);
         })
-        .catch(xhr => {alert('can not connect to server!'); console.error(xhr)});
+        .catch(xhr => {
+            if (xhr.status === 401) {
+                app.$refs.model.show("Your Unsplash Client Access Serial:", "Go to help section [ctrl + h]");
+            } else {
+                alert('can not connect to server!'); console.error(xhr);
+            }
+        });
     }
 }
 const Caches = {};

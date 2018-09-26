@@ -48,6 +48,7 @@ Vue.component('x-grid', {
                 var list = this.collection.images.filter(i => i.id !== img.id);
                 this.collection.images = list;
             }
+            app.$emit('save');
         }
     },
     watch: {

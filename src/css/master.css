@@ -82,9 +82,9 @@ body {
     border: none;
     outline: none;
 }
-.filters-box input[type=text] { width: calc(100% - 50px); color: #222; }
+.filters-box input[type=search] { width: calc(100% - 100px); color: #222; }
 .filters-box input[type=submit] {
-    width: 50px;
+    width: 100px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
