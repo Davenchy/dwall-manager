@@ -29,11 +29,15 @@ Vue.component('x-grid', {
             this.list = list;
         },
         merge: function (local, online) {
-            var list = local.filter(i => true) || [];
+            var list = [];
             for (let i = 0; i < online.length; i++) {
                 const img = online[i];
-                if (!has(list, img)) list.push(img);
+                const limg = find(local, img.id);
+                if (limg) list.push(limg);
+                else list.push(img);
             }
+            if (list.length == 0) list = local.filter(f => true);
+            console.log(online);
             return list;
         },
         update: function () {
@@ -66,10 +70,10 @@ Vue.component('x-grid', {
     template: '#grid'
 });
 
-function has(a, b) {
-    for (let i = 0; i < a.length; i++) {
-        const e = a[i];
-        if (e.id === b.id) return true;
+function find(list, id) {
+    for (let i = 0; i < list.length; i++) {
+        const img = list[i];
+        if (img.id === id) return img;
     }
-    return false;
+    return null;
 }

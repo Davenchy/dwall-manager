@@ -113,8 +113,13 @@ const Server = {
         })
         .catch(xhr => {
             if (xhr.status === 401) {
-                app.$refs.model.show("Your Unsplash Client Access Serial:", "Go to help section [ctrl + h]");
+                app.status = "unsplash user app access key is needed!";
+                app.$refs.model.show("Your Unsplash Client Access Key:", "Go to help section [ctrl + h]", (v) => {
+                    app.store.settings.client_id = v;
+                    app.$emit('save');
+                });
             } else {
+                app.status = "Check your internet!";
                 alert('can not connect to server!'); console.error(xhr);
             }
         });

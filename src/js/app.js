@@ -7,6 +7,7 @@ const app = new Vue({
         page: 1,
         pages: null,
         query: '',
+        login: false,
         web: []
     },
     methods: {
@@ -52,12 +53,17 @@ const app = new Vue({
         IncPage: function () { if (this.page + 1 <= this.pages) this.page++; this.Pager(); },
         DecPage: function () { if (this.page - 1 > 0) this.page--; this.Pager(); },
         setPage: function () {
-            this.$refs.model.show("Go To Page Number? Pages = " + this.pages, this.page, (v) => {
-                if (v < 1) v = 1;
-                if (v > this.pages) v = this.pages;
-                this.page = v;
-                this.Pager();
-            });
+            if (!this.pages) return;
+            else if (this.login) {
+                // show the help page
+            } else {
+                this.$refs.model.show("Go To Page Number? Pages = " + this.pages, this.page, (v) => {
+                    if (v < 1) v = 1;
+                    if (v > this.pages) v = this.pages;
+                    this.page = v;
+                    this.Pager();
+                });
+            }
         }
     },
     computed: {

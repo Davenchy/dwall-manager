@@ -97,10 +97,10 @@ body {
 .grid img {
     width: 100%;
     vertical-align: middle;
-    border: 0 solid #2980b9;
+    border: 0 solid #e74c3c;
     transition: border-width .2s;
 }
-.grid img.selected { border-width: 3px; }
+.grid img.selected { border-width: 5px; }
 
 /* status arrows */
 .arrows { position: relative; margin-bottom: 100px; display: block; }
@@ -195,7 +195,7 @@ body {
     font-size: 15px;
     font-weight: bold;
     border: none;
-    border-radius: 10px;
+    border-radius: 7px;
     background-color: #2980b9;
     color: #f2f2f2;
     cursor: pointer;
@@ -204,8 +204,4 @@ body {
     transition: opacity .2s;
 }
 .model .btn:hover { opacity: 1; }
-
-.model .btn.danger {
-    float: right;
-    background-color: #e74c3c;
-}
+.model .btn.danger { background-color: #e74c3c; }
