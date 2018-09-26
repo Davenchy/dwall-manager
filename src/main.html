@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWall Manager</title>
+    <link href="./css/respo-grid.css" rel="stylesheet" type="text/css">
+    <link href="./css/master.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="app">
+
+        <x-model ref="model"></x-model>
+
+        <div class="left-menu">
+            <div
+                v-for="c in store.collections"
+                :key="c.id"
+                class="item"
+                :class="{selectable: !isCollectionSelected(c.id), selected: isCollectionSelected(c.id)}"
+                @click="onCollectionSelection(c)"
+                @dblclick="onCollectionRename(c)"
+            >
+                    <span class="remove" @click="onCollectionRemove(c)"></span>
+                    <p>{{c.name}}</p>
+            </div>
+            <div class="item center selectable" style="background-color: #27ae60; color: #f2f2f2;" @click="onCollectionCreate">Create New</div>
+        </div>
+        <div class="main-view">
+            <div v-if="this.collection">
+                <div class="filters-box">
+                    <input type="text" placeholder="Set Filters...." v-model="filters" @keydown.enter.prevent="onFilter" ref="filter">
+                    <input type="submit" @click="onFilter" value="Set">
+                </div>
+                <div class="arrows">
+                    <span class="arrow-left" @click="DecPage" v-if="pages"></span>
+                    <span class="center arrow-center" @click="setPage">{{status}}</span>
+                    <span class="arrow-right" @click="IncPage" v-if="pages"></span>
+                </div>
+                <x-grid :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
+            </div>
+            <div v-else>
+                <h1 class="center">Select collection or create one</h1>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- grid template -->
+    <script type="text/template-x" id="grid">
+        <div class="grid row flex">
+            <div class="col lg-1" v-for="(c, i) in list" :key="i">
+                <x-image v-for="img in c" :key="img.id" :img="img" @selection="onSelection" />
+            </div>
+        </div>
+    </script>
+
+
+    <!-- image template -->
+    <script type="text/template-x" id="image">
+        <div v-if="!loading && !error">
+            <img
+                :src="'data:image/jpg;base64,'+img.data"
+                :class="{selected: img.selected}"
+                @click="onSelection"
+            >
+        </div>
+        <div v-else-if="loading && !error">
+            <h2>Loading ({{ progress }}%)</h2>
+        </div>
+        <div v-else>
+            <h2>Error!</h2>
+        </div>
+    </script>
+
+    <!-- model template -->
+
+    <script type="text/template-x" id="model">
+        <transition
+            enter-active-class="model-anim-in"
+            leave-active-class="model-anim-out"
+            appear
+        >
+            <div class="model" v-show="active">
+                <transition
+                    enter-active-class="model-container-anim-in"
+                    leave-active-class="model-container-anim-out"
+                    appear
+                >
+                    <div class="container">
+                        <p class="title">{{ title }}</p>
+
+                        <input type="string" v-model="value" ref="output"
+                            class="output" @keydown.enter.prevent="onDone" @keydown.esc.prevent="onClose"><br>
+
+                        <input class="btn" type="button" value="Done" @click="onDone">
+                        <input class="btn danger" type="button" value="Close" @click="onClose">
+                    </div>
+                </transition>
+            </div>
+        </transition>
+    </script>
+
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/utils.js"></script>
+
+    <script src="./js/components/Image.js"></script>
+    <script src="./js/components/Grid.js"></script>
+    <script src="./js/components/Model.js"></script>
+
+    <script src="./js/app.js"></script>
+</body>
+</html>
+

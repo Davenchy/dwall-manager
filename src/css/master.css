@@ -1,0 +1,211 @@
+/* main rulz */
+* { padding: 0; margin: 0; box-sizing: border-box; }
+body {
+    background-color: #eee;
+    color: #222;
+    font-size: 18px;
+}
+
+/* reusable */
+.center { text-align: center; }
+.right { text-align: right; }
+
+/* left menu */
+.left-menu {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 25%;
+    border-right: 2px solid #888;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.left-menu .item {
+    padding: 5px 20px 5px 10px;
+    border-bottom: 2px solid #888;
+    cursor: default;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-menu .item.selected { background-color: #2980b9; color: #f2f2f2; }
+.left-menu .item.selectable { cursor: pointer; }
+.left-menu .item.item.selectable:hover {
+    background-color: #ddd;
+}
+
+.left-menu .item .remove {
+    position: absolute;
+    display: block;
+    width: 15px; height: 15px;
+    background-color: #e74c3c;
+    border-radius: 50%;
+    right: 5px;
+    opacity: 0.8;
+    transition: opacity .2s;
+}
+.left-menu .item .remove:before {
+    content: 'x';
+    position: absolute;
+    font-size: 14px;
+    top: 49%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #f2f2f2;
+}
+.left-menu .item .remove:hover { opacity: 1; }
+
+
+/* ===================================== */
+/* main view */
+/* ===================================== */
+
+.main-view {
+    position: fixed;
+    top: 0; left: 25%; right: 0; bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* filters box */
+.filters-box {
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 30px;
+}
+.filters-box input {
+    float: left;
+    padding: 10px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+}
+.filters-box input[type=text] { width: calc(100% - 50px); color: #222; }
+.filters-box input[type=submit] {
+    width: 50px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #f2f2f2;
+}
+
+/* grid */
+
+.grid img {
+    width: 100%;
+    vertical-align: middle;
+    border: 0 solid #2980b9;
+    transition: border-width .2s;
+}
+.grid img.selected { border-width: 3px; }
+
+/* status arrows */
+.arrows { position: relative; margin-bottom: 100px; display: block; }
+.arrow-left, .arrow-right {
+    display: inline-block;
+    position: absolute;
+    padding: 10px;
+    border: 5px solid #222;
+    border-bottom: none;
+    border-right: none;
+    cursor: pointer;
+}
+.arrow-left {
+    transform: rotateZ(-45deg);
+    left: 100px;
+    z-index: 1;
+}
+.arrow-right {
+    transform: rotateZ(135deg);
+    right: 100px;
+    z-index: 1;
+}
+.arrow-center {
+    position: absolute;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 0;
+    cursor: pointer;
+}
+
+
+
+/* ===================================== */
+/* Model */
+/* ===================================== */
+
+@keyframes model-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes model-container-anim {
+    0% { transform: translate(-50%, -50%) scale(0.1);  }
+    50% { transform: translate(-50%, -50%) scale(1.2);  }
+    100% { transform: translate(-50%, -50%) scale(1);  }
+}
+
+.model-anim-in { animation: model-fade .2s; }
+.model-anim-out { animation: model-fade .2s reverse; }
+
+.model-container-anim-in { animation: model-container-anim .5s; }
+.model-container-anim-out { animation: model-container-anim .5s reverse; }
+
+.model {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .7);
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10;
+}
+
+.model .container {
+    background-color: #eee;
+    color: #222;
+    z-index: 11;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    overflow: hidden;
+    padding: 20px;
+    border: 2px solid #888;
+    border-radius: 5px;
+}
+
+.model .title {
+    margin-bottom: 20px;
+    font-size: 20px; font-weight: bold;
+}
+
+.model .output {
+    padding: 10px;
+    display: block;
+    width: 100%;
+    font-size: 20px;
+    outline: none;
+    border-radius: 5px;
+}
+
+.model .btn {
+    padding: 7px 10px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background-color: #2980b9;
+    color: #f2f2f2;
+    cursor: pointer;
+    opacity: 0.9;
+    outline: none;
+    transition: opacity .2s;
+}
+.model .btn:hover { opacity: 1; }
+
+.model .btn.danger {
+    float: right;
+    background-color: #e74c3c;
+}

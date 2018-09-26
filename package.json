@@ -1,0 +1,23 @@
+{
+  "name": "dwall-manager",
+  "version": "1.0.0",
+  "description": "unsplash desktop wallpaper manager",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wallpaper",
+    "manager",
+    "electron",
+    "desktop",
+    "unsplash"
+  ],
+  "author": "Davenchy",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^3.0.0",
+    "uuid": "^3.3.2",
+    "wallpaper": "github:Davenchy/wallpaper"
+  }
+}
