@@ -1,7 +1,7 @@
 // consts
-const uuid = require('uuid');
 const fs = require('fs');
 const { ipcRenderer } = require('electron');
+const wallpaper = require('wallpaper');
 
 const version = '1.0.0';
 const storePath = __dirname + '/store.json';
@@ -9,11 +9,13 @@ const storePath = __dirname + '/store.json';
 // utils object
 const utils = new Vue({
     methods: {
+        // create initial store object
         initStore: function () {
             return {
                 version, collections: [], settings: { cols: 3, client_id: '' }
             }
         },
+        // load store object from file
         load: function () {
             var store = this.initStore();
             if (fs.existsSync(storePath)) {
@@ -26,6 +28,7 @@ const utils = new Vue({
             }
             return this.save(store);
         },
+        // save store object to file
         save: function (data = {}) {
             try {
                 jd = JSON.stringify(data);
@@ -37,9 +40,11 @@ const utils = new Vue({
             }
             return null;
         },
+        // create initial collection
         initCollection: function (name = 'New Collection') {
             return{ id: uuid(), name, images: [] };
         },
+        // convert downloaded image bytes buffer to base64 string to store in the store file
         buffer2base64: function (buffer) {
             buffer = new Uint8Array(buffer);
             data = '';
@@ -52,47 +57,14 @@ const utils = new Vue({
     }
 });
 
-// downloader object
-const downloader = new Vue({
-    data: {
-        downloads: {}
-    },
-    methods: {
-        start: function (url, done, prog) {
-            const xhr = new XMLHttpRequest();
-            const id = uuid();
-            const self = this;
-            xhr.open('GET', url);
-            xhr.responseType = 'arraybuffer';
-            xhr.onerror = function () { done(null); }
-            xhr.onloadend = function () { done(xhr.response); self.clear(id); }
-            xhr.onprogress = function (e) {
-                if (e.lengthComputable) {
-                    var p = 100 * e.loaded / e.total;
-                    prog(p);
-                } else prog(-1);
-            }
-            xhr.send();
-
-            this.downloads[id] = xhr;
-            return id;
-        },
-        stop: function (id) {
-            var process = this.downloads[id] || null;
-            if (process != null) { process.abort(); this.clear(id); }
-        },
-        clear: function (id) { this.downloads[id] = undefined; },
-        stopAll: function () {
-            var self = this;
-            var ids = Object.keys(this.downloads);
-            ids.forEach(id => { self.stop(id) });
-        }
-    }
-})
-
 const Server = {
+    // send search request to server and manage the response
+    // id: the unsplash api client id
+    // cb: callback function with images array, and result pages number
+    // query: query to search for [the search keyward]
+    // page: the current page
     search: function (id, cb, query = '', page = 1) {
-        downloader.stopAll();
+        downloader.killGroup('main');
         const images = [];
         var pages = 0;
         API('https://api.unsplash.com/search/photos?orientation=landscape&per_page=20&page=' + page + '&query=' + query + '&client_id=' + id)
@@ -103,26 +75,46 @@ const Server = {
             json.results.forEach(i => {
                 images.push({
                     id: i.id,
-                    url: i.urls.thumb,
-                    // url: i.urls.full,
+                    thumb: i.urls.thumb,
+                    full: i.urls.full,
                     user: i.user.name,
-                    selected: false
+                    selected: false,
+                    fullmode: false
                 });
             });
             cb(images, pages);
         })
         .catch(xhr => {
-            if (xhr.status === 401) {
-                app.status = "unsplash user app access key is needed!";
-                app.$refs.model.show("Your Unsplash Client Access Key:", "Go to help section [ctrl + h]", (v) => {
-                    app.store.settings.client_id = v;
-                    app.$emit('save');
-                });
-            } else {
-                app.status = "Check your internet!";
-                alert('can not connect to server!'); console.error(xhr);
-            }
+            if (xhr.status === 401) access_key_dialog();
+            else { check_internet_dialog(); console.error(xhr); }
         });
     }
 }
-const Caches = {};
+
+// for server object dialogs
+function check_internet_dialog() {
+    app.status = "Check your internet!";
+    app.$refs.model.showadv({ title: "Check your internet!", yesorno: true, positive: 'ok', showNegative: false });
+}
+function access_key_dialog() {
+    app.status = "unsplash user app access key is needed!";
+    app.$refs.model.show({
+        title: "Unsplash client access key is needed, go to settings and set it",
+        yesorno: true,
+        positive: 'settings',
+        done: (v) => {
+            if (!v) return;
+            // go to settings
+        }
+    });
+}
+
+
+// desktop wallpaper manager
+desktop = new Vue({
+    methods: {
+        setWallpaper: function (image) {
+            wallpaper.set(image.data);
+        }
+    }
+});

@@ -10,6 +10,17 @@ body {
 .center { text-align: center; }
 .right { text-align: right; }
 
+.sections-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+}
+
+section {
+    width: 100%;
+    height: 100%;
+}
+
 /* left menu */
 .left-menu {
     position: fixed;
@@ -30,6 +41,7 @@ body {
 }
 
 .left-menu .item.selected { background-color: #2980b9; color: #f2f2f2; }
+.left-menu .item.downloading { animation: downloading 1s infinite ease-in-out; color: #e74c3c; }
 .left-menu .item.selectable { cursor: pointer; }
 .left-menu .item.item.selectable:hover {
     background-color: #ddd;
@@ -101,6 +113,8 @@ body {
     transition: border-width .2s;
 }
 .grid img.selected { border-width: 5px; }
+.grid img.selected.downloaded { border-color: #3498db; }
+.grid img.selected.downloading { animation: downloading 1s infinite ease-in-out; }
 
 /* status arrows */
 .arrows { position: relative; margin-bottom: 100px; display: block; }
@@ -133,20 +147,10 @@ body {
 }
 
 
-
 /* ===================================== */
 /* Model */
 /* ===================================== */
 
-@keyframes model-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes model-container-anim {
-    0% { transform: translate(-50%, -50%) scale(0.1);  }
-    50% { transform: translate(-50%, -50%) scale(1.2);  }
-    100% { transform: translate(-50%, -50%) scale(1);  }
-}
 
 .model-anim-in { animation: model-fade .2s; }
 .model-anim-out { animation: model-fade .2s reverse; }
@@ -156,7 +160,7 @@ body {
 
 .model {
     position: absolute;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, .8);
     top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10;
 }
@@ -172,22 +176,23 @@ body {
     width: 600px;
     overflow: hidden;
     padding: 20px;
-    border: 2px solid #888;
-    border-radius: 5px;
+    border: 1px solid #888;
+    border-radius: 15px;
 }
 
-.model .title {
-    margin-bottom: 20px;
+.model p {
+    /* margin-bottom: 20px; */
     font-size: 20px; font-weight: bold;
 }
 
-.model .output {
+.model .textbox {
     padding: 10px;
     display: block;
     width: 100%;
     font-size: 20px;
     outline: none;
     border-radius: 5px;
+    margin-top: 15px;
 }
 
 .model .btn {
@@ -196,7 +201,7 @@ body {
     font-weight: bold;
     border: none;
     border-radius: 7px;
-    background-color: #2980b9;
+    background-color: #27ae60;
     color: #f2f2f2;
     cursor: pointer;
     opacity: 0.9;
@@ -205,3 +210,23 @@ body {
 }
 .model .btn:hover { opacity: 1; }
 .model .btn.danger { background-color: #e74c3c; }
+
+
+/* ===================================== */
+/* Animations */
+/* ===================================== */
+
+@keyframes downloading {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+@keyframes model-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes model-container-anim {
+    0% { transform: translate(-50%, -50%) scale(0.1);  }
+    50% { transform: translate(-50%, -50%) scale(1.2);  }
+    100% { transform: translate(-50%, -50%) scale(1);  }
+}
