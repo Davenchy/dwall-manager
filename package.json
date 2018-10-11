@@ -4,7 +4,8 @@
   "description": "unsplash desktop wallpaper manager",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-linux64": "electron-packager . dwall-manager --overwrite --asar --prune --platform linux --arch x64 --out releases",
+    "package-linux64": "electron-installer-debian --src releases/dwall-manager-linux-x64 --dest releases --arch amd64"
   },
   "keywords": [
     "wallpaper",
@@ -16,8 +17,11 @@
   "author": "Davenchy",
   "license": "MIT",
   "dependencies": {
-    "electron": "^3.0.0",
     "uuid": "^3.3.2",
     "wallpaper": "github:Davenchy/wallpaper"
+  },
+  "devDependencies": {
+    "electron": "^3.0.4",
+    "electron-packager": "^12.2.0"
   }
 }
