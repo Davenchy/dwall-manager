@@ -1,8 +1,3 @@
-// consts
-const fs = require('fs');
-const { ipcRenderer } = require('electron');
-const wallpaper = require('wallpaper');
-
 const version = '1.0.0';
 const storePath = __dirname + '/store.json';
 
@@ -67,16 +62,20 @@ const Server = {
         downloader.killGroup('main');
         const images = [];
         var pages = 0;
+        var w = window.screen.width, h = window.screen.height;
         API('https://api.unsplash.com/search/photos?orientation=landscape&per_page=20&page=' + page + '&query=' + query + '&client_id=' + id)
         .then(xhr => {
             var json = xhr.toJSON()
             pages = json['total_pages'];
 
             json.results.forEach(i => {
+
+                // get image with width and height
                 images.push({
                     id: i.id,
                     thumb: i.urls.thumb,
                     full: i.urls.full,
+                    raw: i.urls.raw,
                     user: i.user.name,
                     selected: false,
                     fullmode: false
@@ -94,13 +93,13 @@ const Server = {
 // for server object dialogs
 function check_internet_dialog() {
     app.status = "Check your internet!";
-    app.$refs.model.showadv({ title: "Check your internet!", yesorno: true, positive: 'ok', showNegative: false });
+    app.$refs.model.showadv({ title: "Check your internet!", showInput: false, positive: 'ok', showNegative: false });
 }
 function access_key_dialog() {
     app.status = "unsplash user app access key is needed!";
     app.$refs.model.show({
         title: "Unsplash client access key is needed, go to settings and set it",
-        yesorno: true,
+        showInput: false,
         positive: 'settings',
         done: (v) => {
             if (!v) return;
@@ -108,13 +107,3 @@ function access_key_dialog() {
         }
     });
 }
-
-
-// desktop wallpaper manager
-desktop = new Vue({
-    methods: {
-        setWallpaper: function (image) {
-            wallpaper.set(image.data);
-        }
-    }
-});

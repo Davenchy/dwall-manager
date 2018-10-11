@@ -12,50 +12,45 @@
 
         <x-model ref="model"></x-model>
 
-        <div class="sections-container">
+        <x-imageview ref="imageview"></x-imageview>
 
-            <section id="main">
-                <div class="left-menu">
-                    <div
-                        v-for="c in store.collections"
-                        :key="c.id"
-                        class="item"
-                        :class="{selectable: !isCollectionSelected(c.id),
-                            selected: isCollectionSelected(c.id),
-                            downloading: isDownloading(c)
-                        }"
-                        @click="onCollectionSelection(c)"
-                        @dblclick="onCollectionRename(c)"
-                    >
-                            <span class="remove" @click="onCollectionRemove(c)"></span>
-                            <p>{{c.name}}</p>
+        <div class="left-menu">
+            <div
+                v-for="c in store.collections"
+                :key="c.id"
+                class="item"
+                :class="{selectable: !isCollectionSelected(c.id),
+                    selected: isCollectionSelected(c.id),
+                    downloading: isDownloading(c)
+                }"
+                @click="onCollectionSelection(c)"
+                @dblclick="onCollectionRename(c)"
+            >
+                    <span class="remove" @click="onCollectionRemove(c)"></span>
+                    <p>{{c.name}}</p>
+            </div>
+            <div class="item center selectable" style="background-color: #27ae60; color: #f2f2f2;" @click="onCollectionCreate">Create New</div>
+        </div>
+
+
+        <div class="main-view">
+            <div v-if="this.collection">
+                <div class="nav">
+                    <div class="filters-box">
+                        <input type="search" placeholder="Looking For..." v-model="query" @keydown.enter.prevent="() => { page = 1; Pager(); }">
+                        <input type="submit" @click="() => { page = 1; Pager(); }" value="Search">
                     </div>
-                    <div class="item center selectable" style="background-color: #27ae60; color: #f2f2f2;" @click="onCollectionCreate">Create New</div>
-                </div>
-
-
-                <div class="main-view">
-                    <div v-if="this.collection">
-                        <div class="nav">
-                            <div class="filters-box">
-                                <input type="search" placeholder="Looking For..." v-model="query" @keydown.enter.prevent="() => { page = 1; Pager(); }">
-                                <input type="submit" @click="() => { page = 1; Pager(); }" value="Search">
-                            </div>
-                            <div class="arrows">
-                                <span class="arrow-left" @click="DecPage" v-if="pages"></span>
-                                <span class="center arrow-center" @click="setPage">{{status}}</span>
-                                <span class="arrow-right" @click="IncPage" v-if="pages"></span>
-                            </div>
-                        </div>
-                        <x-grid id="grid" :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
-                    </div>
-                    <div v-else>
-                        <h1 class="center">Select collection or create one</h1>
+                    <div class="arrows">
+                        <span class="arrow-left" @click="DecPage" v-if="pages"></span>
+                        <span class="center arrow-center" @click="setPage">{{status}}</span>
+                        <span class="arrow-right" @click="IncPage" v-if="pages"></span>
                     </div>
                 </div>
-            </section>
-
-
+                <x-grid id="grid" :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
+            </div>
+            <div v-else>
+                <h1 class="center">Select collection or create one</h1>
+            </div>
         </div>
 
     </div>
@@ -76,7 +71,7 @@
     <!-- image template -->
     <script type="text/template-x" id="image">
         <div>
-            <div class="imgc" @click="onSelection">
+            <div class="imgc" @click="onSelection" @click.right="onRightClick">
                 <img
                     :src="'data:image/jpg;base64,'+img.data"
                     :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
@@ -110,7 +105,7 @@
                             class="textbox" @keydown.enter.prevent="onDone"
                             @keydown.esc.prevent="onClose"
                             :placeholder="placeholder"
-                            v-if="!yesorno">
+                            v-if="showinput">
 
                         <br>
 
@@ -128,11 +123,13 @@
     <script src="./js/vue.js"></script>
     <script src="./js/api.js"></script>
     <script src="./js/downloader.js"></script>
+    <script src="./js/desktop.js"></script>
     <script src="./js/utils.js"></script>
 
     <script src="./js/components/Image.js"></script>
     <script src="./js/components/Grid.js"></script>
     <script src="./js/components/Model.js"></script>
+    <script src="./js/components/ImageView.js"></script>
 
     <script src="./js/app.js"></script>
 </body>

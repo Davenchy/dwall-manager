@@ -15,6 +15,12 @@ Vue.component('x-image', {
             this.$emit('selection', this.img);
             this.render();
         },
+        onRightClick: function () {
+            if (!this.img.fullmode) return;
+            // desktop.setWallpaper(this.img, true);
+            // console.log('right click')
+            app.$refs.imageview.view(this.img.full);
+        },
         render: function () {
             var self = this;
             // download image thumb id not selected

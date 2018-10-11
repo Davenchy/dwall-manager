@@ -48,7 +48,7 @@ const app = new Vue({
         onCollectionRemove: function (c) {
             this.$refs.model.showadv({
                 title: 'Remove Collection',
-                yesorno: true,
+                showInput: false,
                 positive: 'yes',
                 negative: 'no',
                 done: (v) => {
@@ -100,7 +100,8 @@ const app = new Vue({
             for (let i = 0; i < c.images.length; i++)
                 if (!c.images[i].fullmode) return true;
             return false;
-        }
+        },
+        showcontainer: function() { console.log(location.hash); return location.hash != '' }
     },
     created: function () {
         var self = this;

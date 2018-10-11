@@ -93,12 +93,19 @@ const downloader = new Vue({
         // kill all tasks in group, set force to kill even if it not killable
         killGroup: function (group = '', force = false) {
             this.tasks.forEach(task => {
-                if (task.group === group) task.kill();
+                if (task.group === group && task.kill != undefined) task.kill();
             });
         },
         // kill all tasks in all groups, set force to kill even if it not killable
         killAll: function (force = false) {
-            this.tasks.forEach(task => task.kill())
+            this.tasks.forEach(task => {if (task.kill != undefined) task.kill()})
+        },
+        // clean caches and reduce ram usage
+        clean: function () {
+            this.tasks = this.tasks.map(task => {
+                if (task.downloading) return task;
+                return undefined;
+            });
         }
     }
 })
