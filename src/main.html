@@ -36,16 +36,18 @@
 
                 <div class="main-view">
                     <div v-if="this.collection">
-                        <div class="filters-box">
-                            <input type="search" placeholder="Looking For..." v-model="query" @keydown.enter.prevent="Pager">
-                            <input type="submit" @click="Pager" value="Search">
+                        <div class="nav">
+                            <div class="filters-box">
+                                <input type="search" placeholder="Looking For..." v-model="query" @keydown.enter.prevent="() => { page = 1; Pager(); }">
+                                <input type="submit" @click="() => { page = 1; Pager(); }" value="Search">
+                            </div>
+                            <div class="arrows">
+                                <span class="arrow-left" @click="DecPage" v-if="pages"></span>
+                                <span class="center arrow-center" @click="setPage">{{status}}</span>
+                                <span class="arrow-right" @click="IncPage" v-if="pages"></span>
+                            </div>
                         </div>
-                        <div class="arrows">
-                            <span class="arrow-left" @click="DecPage" v-if="pages"></span>
-                            <span class="center arrow-center" @click="setPage">{{status}}</span>
-                            <span class="arrow-right" @click="IncPage" v-if="pages"></span>
-                        </div>
-                        <x-grid :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
+                        <x-grid id="grid" :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
                     </div>
                     <div v-else>
                         <h1 class="center">Select collection or create one</h1>
@@ -73,18 +75,18 @@
 
     <!-- image template -->
     <script type="text/template-x" id="image">
-        <div v-if="!loading && !error">
-            <img
-                :src="'data:image/jpg;base64,'+img.data"
-                :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
-                @click="onSelection"
-            >
-        </div>
-        <div v-else-if="loading && !error">
-            <h2>Loading ({{ progress }}%)</h2>
-        </div>
-        <div v-else>
-            <h2>Error!</h2>
+        <div>
+            <div class="imgc" @click="onSelection">
+                <img
+                    :src="'data:image/jpg;base64,'+img.data"
+                    :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
+                    v-if="!error && (!loading || img.selected)"
+                >
+                <div v-else class="space"></div>
+
+                <div class="loading" v-if="loading && !error">Loading ({{ progress }})%</div>
+                <div class="loading" v-if="error">ERROR!</div>
+            </div>
         </div>
     </script>
 

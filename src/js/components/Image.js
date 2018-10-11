@@ -19,9 +19,8 @@ Vue.component('x-image', {
             var self = this;
             // download image thumb id not selected
             // or full if selected
-
             if (!this.img.selected) {
-                this.loading = true;
+                self.loading = true;
                 downloader.Task({
                     url: this.img.thumb,
                     group: 'getthumb',
@@ -34,7 +33,7 @@ Vue.component('x-image', {
                     prog: (p) => { self.progress = p; }
                 })
             } else if (this.img.selected && !this.img.fullmode) {
-                loading = true;
+                self.loading = true;
                 downloader.Task({
                     url: this.img.full,
                     group: 'getfull',
@@ -44,7 +43,7 @@ Vue.component('x-image', {
                             // emit save event to the app to write the store object to file
                             app.$emit('save');
                         } else if (!task.ok && !task.downloading) self.error = true;
-                        loading = false;
+                        self.loading = false;
                     },
                     prog: (p) => { self.progress = p; }
                 })
