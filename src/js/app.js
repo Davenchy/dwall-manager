@@ -31,22 +31,32 @@ const app = new Vue({
         },
         // create new collection
         onCollectionCreate: function () {
-            this.$refs.model.show("Collection Name?", "New Collection", (v) => {
-                this.store.collections.push(utils.initCollection(v));
-                app.$emit('save');
-            }, { positive: 'create' });
+            cmd.model({
+                title: "Collection Name?",
+                value: "New Collection",
+                positive: "create",
+                done: name => {
+                    this.store.collections.push(utils.initCollection(name));
+                    cmd.save();
+                }
+            });
         },
         // rename collection
         onCollectionRename: function (c) {
-            this.$refs.model.show("Rename Collection", c.name, (v) => {
-                this.onCollectionSelection(c);
-                this.collection.name = v;
-                app.$emit('save');
-            }, { positive: 'rename' });
+            cmd.model({
+                title: "Rename Collection",
+                value: c.name,
+                positive: "rename",
+                done: name => {
+                    this.onCollectionSelection(c);
+                    this.collection.name = name;
+                    cmd.save();
+                }
+            });
         },
         // remove collection
         onCollectionRemove: function (c) {
-            this.$refs.model.showadv({
+            cmd.model({
                 title: 'Remove Collection',
                 showInput: false,
                 positive: 'yes',
@@ -55,7 +65,7 @@ const app = new Vue({
                     if (!v) return;
                     if (this.isCollectionSelected(c.id)) this.collection = null;
                     this.store.collections = this.store.collections.filter(f => c.id !== f.id);
-                    app.$emit('save');
+                    cmd.save();
                 }
             });
         },
@@ -72,7 +82,6 @@ const app = new Vue({
                     self.pages = pages;
                     self.status = 'Page: ' + self.page + ' of ' + pages;
                 }, this.query, this.page || 1);
-            app.$emit('save');
         },
         // go to the next page
         IncPage: function () { if (this.page + 1 <= this.pages) this.page++; this.Pager(); },
@@ -87,11 +96,16 @@ const app = new Vue({
                 // show the help page
             } else {
                 // show dialog to get the page number
-                this.$refs.model.show("Go To Page Number? Pages = " + this.pages, this.page, (v) => {
-                    if (v < 1) v = 1;
-                    if (v > this.pages) v = this.pages;
-                    this.page = v;
-                    this.Pager();
+                cmd.model({
+                    title: "Go To Page Number? Pages = " + this.pages,
+                    value: this.page,
+                    positive: "go",
+                    done: v => {
+                        if (v < 1) v = 1;
+                        if (v > this.pages) v = this.pages;
+                        this.page = v;
+                        this.Pager();
+                    }
                 });
             }
         },
@@ -103,22 +117,13 @@ const app = new Vue({
         },
         showcontainer: function() { console.log(location.hash); return location.hash != '' }
     },
-    created: function () {
-        var self = this;
-        // load store from file
+    created: async function () {
+        const self = this;
+        cmd.save = function () { utils.save(self.store) }.bind(this);
         this.store = utils.load();
-        // save the current store to file on 'save' event
-        this.$on('save', () => utils.save(self.store));
-    },
-    mounted: function () {
-        // chech if store is loaded
-        // if not create one and save it to file
-        if (!this.store) this.store = utils.save(utils.initStore());
-        // select the first collection
+
         const c = this.store.collections[0] || null;
-        // if c not null then select the collection 'c'
-        if (c) {
-            this.onCollectionSelection(c, () => { app.$emit('save'); });
-        }
+        if (c) this.onCollectionSelection(c);
     },
+    mounted: function() { cmd.updateGrid() }
 });

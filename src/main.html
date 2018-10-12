@@ -46,7 +46,7 @@
                         <span class="arrow-right" @click="IncPage" v-if="pages"></span>
                     </div>
                 </div>
-                <x-grid id="grid" :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
+                <x-grid :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
             </div>
             <div v-else>
                 <h1 class="center">Select collection or create one</h1>
@@ -121,6 +121,9 @@
     <!-- javascript and vue.js files -->
 
     <script src="./js/vue.js"></script>
+    <!-- ipc object for in app events -->
+    <!-- cmd object for in app commands -->
+    <script>const ipc = new Vue(); const cmd = {};</script>
     <script src="./js/api.js"></script>
     <script src="./js/downloader.js"></script>
     <script src="./js/desktop.js"></script>

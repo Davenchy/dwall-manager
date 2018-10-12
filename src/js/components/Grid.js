@@ -64,7 +64,7 @@ Vue.component('x-grid', {
                 this.collection.images = list;
             }
             // emit save event to the app to write the store object to file
-            app.$emit('save');
+            cmd.save();
         }
     },
     watch: {
@@ -81,6 +81,9 @@ Vue.component('x-grid', {
     computed: {
         // compute the images object
         images: function () { return this.merge(this.collection.images, this.web); }
+    },
+    mounted: function() {
+        cmd.updateGrid = this.update.bind(this);
     },
     template: '#grid'
 });

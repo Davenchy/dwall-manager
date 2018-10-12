@@ -15,14 +15,16 @@ body {
     position: fixed;
     top: 0; left: 0; bottom: 0;
     width: 25%;
-    border-right: 2px solid #888;
+    color: #eee;
+    border-right: 2px solid #444;
     overflow-x: hidden;
     overflow-y: auto;
+    background: linear-gradient(#444, rgb(29, 29, 29));
 }
 
 .left-menu .item {
     padding: 5px 20px 5px 10px;
-    border-bottom: 2px solid #888;
+    border-bottom: 2px solid #444;
     cursor: default;
     font-weight: bold;
     position: relative;
@@ -32,9 +34,7 @@ body {
 .left-menu .item.selected { background-color: #2980b9; color: #f2f2f2; }
 .left-menu .item.downloading { animation: downloading 1s infinite ease-in-out; color: #e74c3c; }
 .left-menu .item.selectable { cursor: pointer; }
-.left-menu .item.item.selectable:hover {
-    background-color: #ddd;
-}
+.left-menu .item.item.selectable:hover { background-color: #ddd; color: #222; }
 
 .left-menu .item .remove {
     position: absolute;
@@ -241,6 +241,13 @@ body {
 /* ===================================== */
 /* Image View */
 /* ===================================== */
+
+/* animations */
+.imageview-in { animation: imageview .5s ease-in-out; }
+.imageview-out { animation: imageview .5s ease-in-out reverse; }
+.imageview-in img { animation: imageview-img .5s ease-in-out; }
+.imageview-out img { animation: imageview-img .5s ease-in-out reverse; }
+
 .imageview {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
@@ -255,7 +262,7 @@ body {
     position: fixed;
     width: 70%;
     top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     border-radius: 20px;
 }
 
@@ -295,6 +302,15 @@ body {
     0% { opacity: 0.5; }
     50% { opacity: 1; }
     100% { opacity: 0.5; }
+}
+@keyframes imageview {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes imageview-img {
+    0% { transform: translate(-50%, -50%) scale(0); }
+    50% { transform: translate(-50%, -50%) scale(1.5); }
+    100% { transform: translate(-50%, -50%) scale(1); }
 }
 @keyframes model-fade {
     from { opacity: 0; }

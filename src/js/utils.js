@@ -10,30 +10,23 @@ const utils = new Vue({
                 version, collections: [], settings: { cols: 3, client_id: '' }
             }
         },
+        // save store object to file
+        save: function (data = this.initStore()) {
+            const ans = ipcRenderer.sendSync('store:save', JSON.stringify(data));
+            if (ans == null) {
+                alert('can not read or save data!');
+                ipcRenderer.send('app:exit');
+            }
+            return data;
+        },
         // load store object from file
         load: function () {
-            var store = this.initStore();
-            if (fs.existsSync(storePath)) {
-                try {
-                    var data = fs.readFileSync(storePath, 'utf-8');
-                    data = JSON.parse(data);
-                    return data;
-                } catch(e) {
-                }
-            }
-            return this.save(store);
-        },
-        // save store object to file
-        save: function (data = {}) {
+            const self = this;
+            var data = ipcRenderer.sendSync('store:load');
             try {
-                jd = JSON.stringify(data);
-                fs.writeFileSync(storePath, jd, 'utf-8');
+                data = JSON.parse(data==null?undefined:data);
                 return data;
-            } catch(e) {
-                alert('can not save data!');
-                ipcRenderer.send('quit-app');
-            }
-            return null;
+            } catch(e) { return self.save() }
         },
         // create initial collection
         initCollection: function (name = 'New Collection') {
@@ -93,17 +86,22 @@ const Server = {
 // for server object dialogs
 function check_internet_dialog() {
     app.status = "Check your internet!";
-    app.$refs.model.showadv({ title: "Check your internet!", showInput: false, positive: 'ok', showNegative: false });
+    cmd.model({ title: "Check your internet!", showInput: false, positive: 'ok', showNegative: false });
 }
 function access_key_dialog() {
     app.status = "unsplash user app access key is needed!";
-    app.$refs.model.show({
+    cmd.model({
         title: "Unsplash client access key is needed, go to settings and set it",
         showInput: false,
         positive: 'settings',
         done: (v) => {
             if (!v) return;
             // go to settings
+            app.store.settings.client_id = "912a0f1d4b4c01dcabf718d12d6e05b74eafb16a65870cc0a3eb34746a25deb2";
+            cmd.model({
+                title: "Hack Mode Enabled, Access Key Was Set!",
+                showPositive: false, showInput: false
+            })
         }
     });
 }

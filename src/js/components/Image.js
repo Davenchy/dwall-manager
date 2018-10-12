@@ -46,8 +46,7 @@ Vue.component('x-image', {
                     done: (task) => {
                         if (task.ok && !task.downloading) {
                             self.img.full = task.data; self.img.fullmode = true;
-                            // emit save event to the app to write the store object to file
-                            app.$emit('save');
+                            cmd.save();
                         } else if (!task.ok && !task.downloading) self.error = true;
                         self.loading = false;
                     },

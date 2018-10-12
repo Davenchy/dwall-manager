@@ -17,12 +17,14 @@ Vue.component('x-imageview', {
         }
     },
     template: `
-        <div class="imageview" v-show="show">
-            <img :src="extra + img" @click="wallpaper">
-            <div class="close" @click="show=false">&times;</div>
-            <!--<div class="left"></div>-->
-            <!--<div class="right"></div>-->
-            <!--<div class="top"></div>-->
-        </div>
+        <transition enter-active-class="imageview-in" leave-active-class="imageview-out" appear>
+            <div class="imageview" v-show="show">
+                <img :src="extra + img" @click="wallpaper">
+                <div class="close" @click="show=false">&times;</div>
+                <!--<div class="left"></div>-->
+                <!--<div class="right"></div>-->
+                <!--<div class="top"></div>-->
+            </div>
+        </transition>
     `
 })

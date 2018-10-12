@@ -78,5 +78,8 @@ Vue.component('x-model', {
             this.hideid = setTimeout(() => { self.active = false; cb(); self.hideid = null; }, time);
         }
     },
+    created: function() {
+        cmd.model = this.showadv.bind(this);
+    },
     template: '#model'
 });
