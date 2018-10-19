@@ -85,7 +85,7 @@ Vue.component('x-grid', {
     mounted: function() {
         const self = this;
         cmd.grid = new Object();
-        cmd.grid.update = function () { self.update.bind(self) };
+        cmd.grid.update = function () { self.update() };
         cmd.grid.images = function () { return self.images };
     },
     template: `

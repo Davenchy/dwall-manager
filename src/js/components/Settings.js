@@ -33,7 +33,7 @@ Vue.component('x-settings', {
                 <hr/>
                 <div class="row flex center">
                     <p style="width: 200px;">Grid Columns ({{ settings.cols }})</p>
-                    <input type="range" min="1" max="15" v-model="settings.cols" class="col lg-1">
+                    <input type="range" min="1" max="5" v-model="settings.cols" class="col lg-1">
                 </div>
             </div>
         </transition>

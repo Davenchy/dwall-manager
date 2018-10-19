@@ -162,14 +162,18 @@ body {
 }
 
 
-/* grid */
+/* ===================================== */
+/* Images Grid */
+/* ===================================== */
 .grid img {
     width: 100%;
     vertical-align: middle;
-    border: 0 solid #e74c3c;
     transition: border-width .2s;
 }
+
 .grid .imgc { position: relative; overflow: hidden; }
+
+/* view button*/
 .grid .viewbtn {
     position: absolute;
     bottom: -40px;
@@ -185,12 +189,14 @@ body {
     opacity: 0;
     transition: bottom .5s, opacity .5s;
 }
+
 .selector:hover ~ .viewbtn,
 img.selected.downloaded:hover ~ .viewbtn,
 .viewbtn:hover { bottom: 10px; opacity: 1; }
 .grid .viewbtn:hover, .grid .viewbtn:active { background-color: rgba(0, 0, 0, .8); }
 .grid .viewbtn i { position: relative; top: 50%; transform: translate(0, -50%) }
 
+/* selector [to prevent click on the image] */
 .grid .selector {
     position: absolute;
     top: 0; left: 0;
@@ -220,9 +226,20 @@ img.selected.downloaded:hover ~ .viewbtn,
     font-size: 18px;
     background-color: rgba(0, 0, 0, 0.5);
 }
-.grid img.selected { border-width: 5px; }
-.grid img.selected.downloaded { border-color: #3498db; }
 .grid img.selected.downloading { animation: downloading 1s infinite ease-in-out; }
+
+.grid .marker {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: .7em; height: .7em;
+    border-radius: 50%;
+    background-color: #e74d3c;
+    border: 1px solid #222;
+    opacity: 0;
+    transition: .5s opacity, .5s background-color;
+}
+.grid .marker.selected { opacity: 1; }
+.grid .marker.selected.downloaded { background-color: #3498db; }
 
 
 /* ===================================== */

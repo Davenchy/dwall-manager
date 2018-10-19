@@ -3,25 +3,10 @@ simple unsplash desktop wallpaper manager
 
 ## Latest Changes
 
-- added view button on fullmode images [local images]
-- added cmd.view.show // to render any base64 image data
-- added cmd.view.setCurrentImageAsDesktopWallpaper // to render any base64 image data
-- added unsplash user copyright in the view mode
-- imported fontawesome icons
-- added menu to image view mode
-- added buttons to the image view mode
-- added arrows in image view mode
-- added 'set image as wallpaper'
-- added 'save image as' button in image view mode
-- added settings button to the collections menu
-- added scripts button to collections menu
-- added cmd.settings
-- added cmd.scripts
-- added scripts section
-- added sections style
-- updated cmd.updateGrid to cmd.grid.update
-- added cmd.grid.images
-- added save button to settings
+- fix image view arrows and navigation
+- added cmd.images // returns images in sellected collection
+- fix auto select first collection when start
+- added copy to collection button in image view mode
 
 
 ## Todo

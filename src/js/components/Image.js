@@ -62,9 +62,10 @@ Vue.component('x-image', {
             <div class="imgc">
                 <img
                     :src="'data:image/jpg;base64,'+img.data"
-                    :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
+                    :class="{downloading}"
                     v-if="!error && (!loading || img.selected)"
                 >
+                <span class="marker" :class="{selected: img.selected, downloaded: img.fullmode}"></span>
                 <div v-else class="space"></div>
                 <span class="selector" @click="onSelection"></span>
                 <span class="viewbtn" @click="openView" v-show="img.fullmode"><i class="far fa-eye"></i></span>

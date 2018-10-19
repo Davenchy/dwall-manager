@@ -119,7 +119,7 @@ const app = new Vue({
     },
     created: async function () {
         const self = this;
-        cmd.save = function () { utils.save(self.store) }.bind(this);
+        cmd.save = function () { utils.save(self.store) };
         this.store = utils.load();
 
         const c = this.store.collections[0] || null;
@@ -130,7 +130,9 @@ const app = new Vue({
                 title: 'This feature is under development',
                 showInput: false, showNegative: false, positive: 'ok'
             });
-        }.bind(this);
+        }
+
+        cmd.images = function () { return self.collection ? self.collection.images: undefined; }
     },
     mounted: function() { cmd.grid.update(); cmd.settings.import(this.store.settings); }
 });
