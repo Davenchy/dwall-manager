@@ -124,6 +124,13 @@ const app = new Vue({
 
         const c = this.store.collections[0] || null;
         if (c) this.onCollectionSelection(c);
+
+        cmd.underdevelopment = function () {
+            cmd.model({
+                title: 'This feature is under development',
+                showInput: false, showNegative: false, positive: 'ok'
+            });
+        }.bind(this);
     },
-    mounted: function() { cmd.updateGrid() }
+    mounted: function() { cmd.grid.update(); cmd.settings.import(this.store.settings); }
 });

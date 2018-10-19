@@ -70,6 +70,8 @@ const Server = {
                     full: i.urls.full,
                     raw: i.urls.raw,
                     user: i.user.name,
+                    html: i.user.links.html,
+                    description: i.description,
                     selected: false,
                     fullmode: false
                 });
@@ -96,12 +98,7 @@ function access_key_dialog() {
         positive: 'settings',
         done: (v) => {
             if (!v) return;
-            // go to settings
-            app.store.settings.client_id = "912a0f1d4b4c01dcabf718d12d6e05b74eafb16a65870cc0a3eb34746a25deb2";
-            cmd.model({
-                title: "Hack Mode Enabled, Access Key Was Set!",
-                showPositive: false, showInput: false
-            })
+            cmd.settings.show();
         }
     });
 }

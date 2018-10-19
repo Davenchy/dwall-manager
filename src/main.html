@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DWall Manager</title>
+    <link href="./css/fontawesome/fontawesome.css" rel="stylesheet" type="text/css">
     <link href="./css/respo-grid.css" rel="stylesheet" type="text/css">
     <link href="./css/master.css" rel="stylesheet" type="text/css">
 </head>
@@ -12,9 +13,41 @@
 
         <x-model ref="model"></x-model>
 
-        <x-imageview ref="imageview"></x-imageview>
+        <x-settings ref="settings"></x-settings>
+        <x-scripts ref="scripts"></x-scripts>
+
+        <x-imageview ref="imageview">
+            <span class="item" title="Set Desktop Wallpaper" @click="cmd.view.setCurrentImageAsDesktopWallpaper()">
+                <i class="fas fa-desktop"></i>
+            </span>
+            <span class="item" title="Save Image As" @click="cmd.view.saveCurrentImageAs()">
+                <i class="fas fa-save"></i>
+            </span>
+            <span class="item" title="Copy To Collection" @click="cmd.underdevelopment()">
+                <i class="fas fa-copy"></i>
+            </span>
+        </x-imageview>
 
         <div class="left-menu">
+            <div class="row flex center">
+                <div class="item center selectable col lg-1"
+                    style="background-color: #27ae60; color: #f2f2f2;"
+                    title="Create new collection"
+                    @click="onCollectionCreate"><div><i class="fas fa-plus-circle"></i><p>Create New</p></div>
+                </div>
+                <div class="item center selectable col"
+                    style="background-color: #2980b9; color: #f2f2f2; padding: 5px 0; width: 40px;"
+                    title="Scripts"
+                    @click="cmd.underdevelopment()"
+                    ><i class="fas fa-code"></i>
+                </div>
+                <div class="item center selectable col"
+                    style="background-color: #2d3436; color: #f2f2f2; padding: 5px 0; width: 40px;"
+                    title="Settings"
+                    @click="cmd.settings.show()"
+                    ><i class="fas fa-cog"></i>
+                </div>
+            </div>
             <div
                 v-for="c in store.collections"
                 :key="c.id"
@@ -29,7 +62,6 @@
                     <span class="remove" @click="onCollectionRemove(c)"></span>
                     <p>{{c.name}}</p>
             </div>
-            <div class="item center selectable" style="background-color: #27ae60; color: #f2f2f2;" @click="onCollectionCreate">Create New</div>
         </div>
 
 
@@ -55,75 +87,12 @@
 
     </div>
 
-
-    <!-- Templates -->
-
-    <!-- grid template -->
-    <script type="text/template-x" id="grid">
-        <div class="grid row flex">
-            <div class="col lg-1" v-for="(c, i) in list" :key="i">
-                <x-image v-for="img in c" :key="img.id" :img="img" @selection="onSelection" />
-            </div>
-        </div>
-    </script>
-
-
-    <!-- image template -->
-    <script type="text/template-x" id="image">
-        <div>
-            <div class="imgc" @click="onSelection" @click.right="onRightClick">
-                <img
-                    :src="'data:image/jpg;base64,'+img.data"
-                    :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
-                    v-if="!error && (!loading || img.selected)"
-                >
-                <div v-else class="space"></div>
-
-                <div class="loading" v-if="loading && !error">Loading ({{ progress }})%</div>
-                <div class="loading" v-if="error">ERROR!</div>
-            </div>
-        </div>
-    </script>
-
-    <!-- model template -->
-    <script type="text/template-x" id="model">
-        <transition
-            enter-active-class="model-anim-in"
-            leave-active-class="model-anim-out"
-            appear
-        >
-            <div class="model" v-show="active">
-                <transition
-                    enter-active-class="model-container-anim-in"
-                    leave-active-class="model-container-anim-out"
-                    appear
-                >
-                    <div class="container">
-                        <p>{{ title }}</p>
-
-                        <input type="text" v-model="value" ref="output"
-                            class="textbox" @keydown.enter.prevent="onDone"
-                            @keydown.esc.prevent="onClose"
-                            :placeholder="placeholder"
-                            v-if="showinput">
-
-                        <br>
-
-                        <input class="btn" type="button" :value="pos" @click="onDone" v-if="showpos">
-                        <input class="btn danger" type="button" :value="neg" @click="onClose" v-if="showneg">
-                    </div>
-                </transition>
-            </div>
-        </transition>
-    </script>
-
-
     <!-- javascript and vue.js files -->
 
     <script src="./js/vue.js"></script>
     <!-- ipc object for in app events -->
     <!-- cmd object for in app commands -->
-    <script>const ipc = new Vue(); const cmd = {};</script>
+    <script>const ipc = new Vue(); const cmd = {}; const {shell, ipcRenderer } = require('electron');</script>
     <script src="./js/api.js"></script>
     <script src="./js/downloader.js"></script>
     <script src="./js/desktop.js"></script>
@@ -133,6 +102,8 @@
     <script src="./js/components/Grid.js"></script>
     <script src="./js/components/Model.js"></script>
     <script src="./js/components/ImageView.js"></script>
+    <script src="./js/components/Settings.js"></script>
+    <script src="./js/components/Scripts.js"></script>
 
     <script src="./js/app.js"></script>
 </body>

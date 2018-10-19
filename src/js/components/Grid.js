@@ -83,9 +83,18 @@ Vue.component('x-grid', {
         images: function () { return this.merge(this.collection.images, this.web); }
     },
     mounted: function() {
-        cmd.updateGrid = this.update.bind(this);
+        const self = this;
+        cmd.grid = new Object();
+        cmd.grid.update = function () { self.update.bind(self) };
+        cmd.grid.images = function () { return self.images };
     },
-    template: '#grid'
+    template: `
+        <div class="grid row flex">
+            <div class="col lg-1" v-for="(c, i) in list" :key="i">
+                <x-image v-for="img in c" :key="img.id" :img="img" @selection="onSelection" />
+            </div>
+        </div>
+    `
 });
 
 // chech if the image in the list or not

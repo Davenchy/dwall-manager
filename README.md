@@ -3,36 +3,31 @@ simple unsplash desktop wallpaper manager
 
 ## Latest Changes
 
-- fix bugs
-- update store load and save commands
-- created ipc for in app events
-- created cmd object for in app commands
-- created cmd.gridUpdate // to update the grid images
-- created cmd.save // to save store to file
-- created cmd.model // to show advanced model
-- update desktop set wallpaper
-- added animation to imageview
-- edited the style
-- fix images view
+- added view button on fullmode images [local images]
+- added cmd.view.show // to render any base64 image data
+- added cmd.view.setCurrentImageAsDesktopWallpaper // to render any base64 image data
+- added unsplash user copyright in the view mode
+- imported fontawesome icons
+- added menu to image view mode
+- added buttons to the image view mode
+- added arrows in image view mode
+- added 'set image as wallpaper'
+- added 'save image as' button in image view mode
+- added settings button to the collections menu
+- added scripts button to collections menu
+- added cmd.settings
+- added cmd.scripts
+- added scripts section
+- added sections style
+- updated cmd.updateGrid to cmd.grid.update
+- added cmd.grid.images
+- added save button to settings
+
 
 ## Todo
 
-- left click to select or unselect [in search mode] 90%
-- left click to open view mode [in normal mode] 80%
-- right click to unselect [in normal mode] 50%
-- add menu to view mode 0%
-- add buttons to view mode 0%
-- add arrows to navigate in images view 30%
-- add 'set image as wallpaper button' 0%
-- add 'save image as jpg button' 0%
-- close view mode when press in empty space 0%
-- add settings and help buttons to collections menu 30%
-- import fontawsome 0%
-
-- add unsplash copyrights on imageview
-- add random image selection %0
-- add time range for each component %0
-- add settings selection %0
-- add help section %0
-- add documentaion %0
-- create packages and exe file [for linux and windows] %60
+- add scripts system 0%
+- add set random image as a wallpaper 0%
+- add time range for each component [to set random image as a wallpaper] 0%
+- add documentaion 0%
+- add load image from computer button 0%

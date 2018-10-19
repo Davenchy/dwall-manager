@@ -15,11 +15,9 @@ Vue.component('x-image', {
             this.$emit('selection', this.img);
             this.render();
         },
-        onRightClick: function () {
+        openView: function () {
             if (!this.img.fullmode) return;
-            // desktop.setWallpaper(this.img, true);
-            // console.log('right click')
-            app.$refs.imageview.view(this.img.full);
+            cmd.view.show(this.img);
         },
         render: function () {
             var self = this;
@@ -59,5 +57,20 @@ Vue.component('x-image', {
     computed: {
         downloading: function () { return !this.img.fullmode && this.img.selected; }
     },
-    template: '#image'
+    template: `
+        <div>
+            <div class="imgc">
+                <img
+                    :src="'data:image/jpg;base64,'+img.data"
+                    :class="{selected: img.selected, downloaded: img.fullmode, downloading}"
+                    v-if="!error && (!loading || img.selected)"
+                >
+                <div v-else class="space"></div>
+                <span class="selector" @click="onSelection"></span>
+                <span class="viewbtn" @click="openView" v-show="img.fullmode"><i class="far fa-eye"></i></span>
+                <div class="loading" v-if="loading && !error">Loading ({{ progress }})%</div>
+                <div class="loading" v-if="error">ERROR!</div>
+            </div>
+        </div>
+    `
 });

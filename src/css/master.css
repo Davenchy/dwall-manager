@@ -10,6 +10,21 @@ body {
 .center { text-align: center; }
 .right { text-align: right; }
 
+.btn {
+    display: inline-block;
+    width: 100px;
+    font-size: 18px;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 7px 10px;
+    background-color: #2980b9;
+    color: #f2f2f2;
+    margin: 0 10px;
+}
+.btn:hover, .btn:active { background-color: #206ea1; }
+
 /* left menu */
 .left-menu {
     position: fixed;
@@ -57,6 +72,7 @@ body {
 }
 .left-menu .item .remove:hover { opacity: 1; }
 
+.left-menu .item p { display: inline-block; margin: 0 10px; }
 
 /* ===================================== */
 /* main view */
@@ -153,7 +169,43 @@ body {
     border: 0 solid #e74c3c;
     transition: border-width .2s;
 }
-.grid .imgc { position: relative; }
+.grid .imgc { position: relative; overflow: hidden; }
+.grid .viewbtn {
+    position: absolute;
+    bottom: -40px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, .7);
+    border-radius: 50%;
+    color: #eee;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    overflow: hidden;
+    opacity: 0;
+    transition: bottom .5s, opacity .5s;
+}
+.selector:hover ~ .viewbtn,
+img.selected.downloaded:hover ~ .viewbtn,
+.viewbtn:hover { bottom: 10px; opacity: 1; }
+.grid .viewbtn:hover, .grid .viewbtn:active { background-color: rgba(0, 0, 0, .8); }
+.grid .viewbtn i { position: relative; top: 50%; transform: translate(0, -50%) }
+
+.grid .selector {
+    position: absolute;
+    top: 0; left: 0;
+    width: calc(100% - 70px);
+    height: 100%;
+    display: block;
+}
+.grid .selector:after {
+    position: absolute;
+    content: '';
+    top: 0; right: -70px;
+    width: 70px;
+    height: calc(100% - 40px);
+    display: block;
+}
 .grid .space { display: block; width: 100%; height: 200px; }
 .grid .loading {
     position: absolute;
@@ -231,6 +283,7 @@ body {
     color: #f2f2f2;
     cursor: pointer;
     opacity: 0.9;
+    width: auto;
     outline: none;
     transition: opacity .2s;
 }
@@ -243,20 +296,10 @@ body {
 /* ===================================== */
 
 /* animations */
-.imageview-in { animation: imageview .5s ease-in-out; }
-.imageview-out { animation: imageview .5s ease-in-out reverse; }
-.imageview-in img { animation: imageview-img .5s ease-in-out; }
-.imageview-out img { animation: imageview-img .5s ease-in-out reverse; }
+.section-in.imageview.section img { animation: imageview-img .5s ease-in-out; }
+.section-out.imageview.section img { animation: imageview-img .5s ease-in-out reverse; }
 
-.imageview {
-    background-color: rgba(0, 0, 0, 0.7);
-    position: fixed;
-    z-index: 5;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
+.imageview.section { background-color: rgba(0, 0, 0, 0.7); }
 
 .imageview img {
     position: fixed;
@@ -266,16 +309,6 @@ body {
     border-radius: 20px;
 }
 
-.imageview .close {
-    position: fixed;
-    top: 10px; right: 10px;
-    padding: 20px;
-    cursor: pointer;
-    color: #e74c3c;
-    font-weight: 700;
-    font-size: 50px;
-}
-
 .imageview .left, .imageview .right {
     position: fixed;
     top: 50%;
@@ -283,6 +316,7 @@ body {
     padding: 20px;
     transform: translate(0, -50%) rotate(45deg);
     cursor: pointer;
+    border-radius: 50px;
 }
 .imageview .left {
     left: 50px;
@@ -294,6 +328,108 @@ body {
     border-bottom-width: 0;
     border-left-width: 0;
 }
+
+.imageview .copyright {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #eee;
+    font-size: 20px; font-weight: bold;
+    cursor: pointer;
+    top: 0; left: 0; right: 0;
+    padding: 10px;
+
+    text-align: center;
+    overflow: hidden;
+}
+
+.imageview .menu {
+    position: absolute;
+    background-color: transparent;
+    top: 50px; bottom: 50px; left: calc(15% - 25px);
+    width: 50px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.imageview .item {
+    background-color: #eee;
+    width: 40px; height: 40px;
+    overflow: hidden;
+    display: block;
+    margin: 10px auto;
+    position: relative;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #222;
+}
+.imageview .item:hover, .imageview .item:active { background-color: #fff; }
+.imageview .item i {
+    position: absolute;
+    text-align: center;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 23px;
+    color: #222;
+}
+
+/* ===================================== */
+/* Settings */
+/* ===================================== */
+
+.settings.section {
+    padding: 20px;
+    padding-right: 70px;
+    background-color: #444;
+    color: #f2f2f2;
+}
+
+.settings hr {
+    margin: 20px 0;
+}
+
+.settings p { padding: 10px; font-size: 20px; font-weight: 600; cursor: default; }
+
+.settings input[type=text] {
+    cursor: text;
+    outline: none;
+    padding: 5px 5px;
+    border: none;
+    color: #f2f2f2;
+    border-bottom: 1px solid #eee;
+    font-size: 20px;
+    background-color: transparent;
+    width: 100%;
+}
+
+/* ===================================== */
+/* Sections */
+/* ===================================== */
+
+/* animations */
+.section-in { animation: section .5s ease-in-out; }
+.section-out { animation: section .5s ease-in-out reverse; }
+
+.section {
+    background-color: #f2f2f2;
+    color: #222;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.section .close {
+    position: fixed;
+    top: 10px; right: 10px;
+    padding: 20px;
+    cursor: pointer;
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 50px;
+}
+
 /* ===================================== */
 /* Animations */
 /* ===================================== */
@@ -303,7 +439,7 @@ body {
     50% { opacity: 1; }
     100% { opacity: 0.5; }
 }
-@keyframes imageview {
+@keyframes section {
     0% { opacity: 0; }
     100% { opacity: 1; }
 }

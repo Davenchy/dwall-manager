@@ -81,5 +81,34 @@ Vue.component('x-model', {
     created: function() {
         cmd.model = this.showadv.bind(this);
     },
-    template: '#model'
+    template: `
+        <transition
+            enter-active-class="model-anim-in"
+            leave-active-class="model-anim-out"
+            appear
+        >
+            <div class="model" v-show="active">
+                <transition
+                    enter-active-class="model-container-anim-in"
+                    leave-active-class="model-container-anim-out"
+                    appear
+                >
+                    <div class="container">
+                        <p>{{ title }}</p>
+
+                        <input type="text" v-model="value" ref="output"
+                            class="textbox" @keydown.enter.prevent="onDone"
+                            @keydown.esc.prevent="onClose"
+                            :placeholder="placeholder"
+                            v-if="showinput">
+
+                        <br>
+
+                        <input class="btn" type="button" :value="pos" @click="onDone" v-if="showpos">
+                        <input class="btn danger" type="button" :value="neg" @click="onClose" v-if="showneg">
+                    </div>
+                </transition>
+            </div>
+        </transition>
+    `
 });

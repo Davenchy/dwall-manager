@@ -4,12 +4,13 @@ const fs = require('fs');
 const name = 'store.json';
 const wp = 'wallpaper.jpg';
 
-const { app, BrowserWindow, ipcMain } = electron;
+const { app, BrowserWindow, ipcMain, dialog } = electron;
 
 let win;
 
 app.on('ready', function () {
-    win = new BrowserWindow({ show: false, minWidth: 800, minHeight: 400 });
+    win = new BrowserWindow({ show: false, minWidth: 950, minHeight: 400, center: true });
+    win.maximize()
     win.loadFile('./src/main.html');
     // win.webContents.openDevTools();
     win.show();
@@ -65,4 +66,27 @@ ipcMain.on('wallpaper:get', () => {
     wallpaper.get()
     .then(path => ipcMain.send('feedback:wallpaper:get', path))
     .catch(e => ipcMain.send('feedback:wallpaper:get'));
+});
+
+// save image
+ipcMain.on('wallpaper:save', (event, args) => {
+    const {name, data} = args;
+    console.log(name)
+    const saveDialog = dialog.showSaveDialog({
+        options: {
+            title: 'save wallpaper as',
+            buttonLabel: 'save as',
+            message: 'save wallpaper as',
+            defaultPath: name + '.jpg' || 'wallpaper.jpg',
+            filters: [{name: 'Image', extensions: ['jpg']}]
+        }
+    }, (path) => {
+        if (!path) return event.sender.send('feedback:wallpaper:save', 2);
+
+        fs.writeFile(path, data, 'base64', err => {
+            if (err) event.sender.send('feedback:wallpaper:save', false);
+            else event.sender.send('feedback:wallpaper:save', 1);
+        })
+    });
+
 });
