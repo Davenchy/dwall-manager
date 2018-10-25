@@ -20,7 +20,6 @@ ____
 
 ### Build For Windows
 
-- Windows: `build -w`
 - Windows (MSI): `build -w msi`
 - Windows (NSIS): `build -w nsis`
 - Windows (ZIP): `build -w zip`
@@ -40,7 +39,7 @@ ____
 ### ARCH Flags
 
 - for x64 (default): `--x64`
-- for 32bit: `ia32`
+- for 32bit: `--ia32`
 - for amd64: `--amd64`
 - and etc...
 
