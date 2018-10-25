@@ -1,31 +1,56 @@
-# dwall_manager
+# DWall Manager
 simple unsplash desktop wallpaper manager
 
 
 ## Build From Source Code
 
-- first install packages and electron itself
+- install dependencies
 
 ```
     npm i
     npm i -D electron
+    npm i -D electron-builder
 ```
 
-- then install electron-builder
+- note: electron-builder builds into the `/dist` directory
+- for help about `electron-builder` use `build -h` or `electron-builder -h`
+- note: the __below__ build commands are tested on `linux mint 18.3`
 
-`npm i -g electron-builder`
+____
 
-- to build for your platform
+### Build For Windows
 
-`build`
+- Windows: `build -w`
+- Windows (MSI): `build -w msi`
+- Windows (NSIS): `build -w nsis`
+- Windows (ZIP): `build -w zip`
 
-- note: electron-builder builds into the '/dist' directory
-- for help use `build -h`
+### Build For MAC OS
+
+- MAC OS (ZIP): `build -m zip`
+- MAC OS (TAR): `build -m tar.gz`
+
+### Build For Linux
+- Linux (Debian): `build -l deb`
+- Linux (AppImage): `build -l appimage`
+- Linux (Snap): `build -l snap`
+- Linux (ZIP): `build -l zip`
+- Linux (TAR): `build -l tar.gz`
+
+### ARCH Flags
+
+- for x64 (default): `--x64`
+- for 32bit: `ia32`
+- for amd64: `--amd64`
+- and etc...
+
+____
 
 ## Latest Changes
 
-- fix bugs
-- added electron builder scripts
+- updated build commands
+
+____
 
 ## Todo
 

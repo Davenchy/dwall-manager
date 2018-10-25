@@ -7,6 +7,7 @@
     "appId": "com.davenchy.dwall-manager",
     "productName": "Dwall Manager"
   },
+  "homepage": "https://davenchy.github.io/dwall_manager/",
   "keywords": [
     "wallpaper",
     "manager",
@@ -14,7 +15,10 @@
     "desktop",
     "unsplash"
   ],
-  "author": "Davenchy",
+  "author": {
+    "name": "Davenchy",
+    "email": "firon1222@gmail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "uuid": "^3.3.2",
