@@ -108,27 +108,4 @@ const downloader = new Vue({
             });
         }
     }
-})
-
-
-
-
-const a = new Vue({
-    data: {
-        l: []
-    },
-    methods: {
-        create: function () {
-            const b = {
-                data: ''
-            }
-
-            setTimeout(() => {
-                b.data = uuid();
-                console.log('done');
-            }, 2000);
-
-            return b;
-        }
-    }
 });
