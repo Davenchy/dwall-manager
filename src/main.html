@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div
-                v-for="c in store.collections"
+                v-for="c in memory.collections"
                 :key="c.id"
                 class="item"
                 :class="{selectable: !isCollectionSelected(c.id),
@@ -78,7 +78,7 @@
                         <span class="arrow-right" @click="IncPage" v-if="pages"></span>
                     </div>
                 </div>
-                <x-grid :cols="store.settings.cols" :collection="collection" :web="web" ref="grid" />
+                <x-grid :cols="memory.settings.cols" :collection="collection" :web="web" ref="grid" />
             </div>
             <div v-else>
                 <h1 class="center">Select collection or create one</h1>

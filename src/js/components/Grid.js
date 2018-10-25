@@ -35,7 +35,7 @@ Vue.component('x-grid', {
 
             this.list = list;
         },
-        // merge the store, cached and downloaded images in one list to build it and render
+        // merge the memory, cached and downloaded images in one list to build it and render
         merge: function (local, online) {
             var list = [];
             for (let i = 0; i < online.length; i++) {
@@ -54,8 +54,8 @@ Vue.component('x-grid', {
         },
         // clear all images
         clear: function () { this.list = []; },
-        // on image select save it to the store file [as local image]
-        // or remove it from the store file
+        // on image select save it to the memory file [as local image]
+        // or remove it from the memory file
         onSelection: function (img) {
             if (img.selected) {
                 this.collection.images.push(img);
@@ -63,7 +63,7 @@ Vue.component('x-grid', {
                 var list = this.collection.images.filter(i => i.id !== img.id);
                 this.collection.images = list;
             }
-            // emit save event to the app to write the store object to file
+            // emit save event to the app to write the memory object to file
             cmd.save();
         }
     },

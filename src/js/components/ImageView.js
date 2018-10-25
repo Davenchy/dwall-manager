@@ -55,7 +55,7 @@ Vue.component('x-imageview', {
                     if (!v.length > 0) return;
                     const ns = v.split(',');
                     ns.forEach(n => {
-                        c = app.store.collections[parseInt(n) - 1] || undefined;
+                        c = app.memory.collections[parseInt(n) - 1] || undefined;
                         if (!c) return;
                         const img = Object.assign({}, {...self.img});
                         if (has(c.images, img.id)) return;

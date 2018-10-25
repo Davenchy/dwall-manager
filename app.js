@@ -1,7 +1,7 @@
 const electron = require('electron');
 const wallpaper = require('wallpaper');
 const fs = require('fs');
-const name = 'store.json';
+const name = 'memory.json';
 const wp = 'wallpaper.jpg';
 
 const { app, BrowserWindow, ipcMain, dialog } = electron;
@@ -25,7 +25,7 @@ app.on('ready', function () {
 ipcMain.on('app:exit', event => { app.quit(); })
 
 // load data
-ipcMain.on('store:load', event => {
+ipcMain.on('memory:load', event => {
     var data;
     if (!fs.existsSync(name)) return event.returnValue = null;
     try {
@@ -35,7 +35,7 @@ ipcMain.on('store:load', event => {
 });
 
 // save data
-ipcMain.on('store:save', (event, data) => {
+ipcMain.on('memory:save', (event, data) => {
     try {
         fs.writeFileSync(name, data);
         event.returnValue = true;
@@ -43,7 +43,7 @@ ipcMain.on('store:save', (event, data) => {
 });
 
 // reset data
-ipcMain.on('store:reset', event => {
+ipcMain.on('memory:reset', event => {
     try {
         fs.unlinkSync(name);
         event.returnValue = true;

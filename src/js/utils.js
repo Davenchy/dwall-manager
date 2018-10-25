@@ -1,28 +1,27 @@
 const version = '1.0.0';
-const storePath = __dirname + '/store.json';
 
 // utils object
 const utils = new Vue({
     methods: {
-        // create initial store object
-        initStore: function () {
+        // create initial memory object
+        initMemory: function () {
             return {
-                version, collections: [], settings: { cols: 3, client_id: '' }
+                version, collections: [], settings: { cols: 3, client_id: '912a0f1d4b4c01dcabf718d12d6e05b74eafb16a65870cc0a3eb34746a25deb2' }
             }
         },
-        // save store object to file
-        save: function (data = this.initStore()) {
-            const ans = ipcRenderer.sendSync('store:save', JSON.stringify(data));
+        // save memory object to file
+        save: function (data = this.initMemory()) {
+            const ans = ipcRenderer.sendSync('memory:save', JSON.stringify(data));
             if (ans == null) {
                 alert('can not read or save data!');
                 ipcRenderer.send('app:exit');
             }
             return data;
         },
-        // load store object from file
+        // load memory object from file
         load: function () {
             const self = this;
-            var data = ipcRenderer.sendSync('store:load');
+            var data = ipcRenderer.sendSync('memory:load');
             try {
                 data = JSON.parse(data==null?undefined:data);
                 return data;
@@ -32,7 +31,7 @@ const utils = new Vue({
         initCollection: function (name = 'New Collection') {
             return{ id: uuid(), name, images: [] };
         },
-        // convert downloaded image bytes buffer to base64 string to store in the store file
+        // convert downloaded image bytes buffer to base64 string to memory in the memory file
         buffer2base64: function (buffer) {
             buffer = new Uint8Array(buffer);
             data = '';

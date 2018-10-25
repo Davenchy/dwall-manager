@@ -2,6 +2,7 @@
 node_modules
 notes
 store.json
+memory.json
 wallpaper.jpg
 .*
 releases

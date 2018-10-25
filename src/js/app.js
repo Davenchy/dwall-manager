@@ -1,8 +1,8 @@
 const app = new Vue({
     el: '#app',
     data: {
-        // the current store file
-        store: null,
+        // the current memory file
+        memory: null,
         // current selected collection to render and edit
         collection: null,
         // status or current page number to display
@@ -36,7 +36,7 @@ const app = new Vue({
                 value: "New Collection",
                 positive: "create",
                 done: name => {
-                    this.store.collections.push(utils.initCollection(name));
+                    this.memory.collections.push(utils.initCollection(name));
                     cmd.save();
                 }
             });
@@ -64,7 +64,7 @@ const app = new Vue({
                 done: (v) => {
                     if (!v) return;
                     if (this.isCollectionSelected(c.id)) this.collection = null;
-                    this.store.collections = this.store.collections.filter(f => c.id !== f.id);
+                    this.memory.collections = this.memory.collections.filter(f => c.id !== f.id);
                     cmd.save();
                 }
             });
@@ -76,7 +76,7 @@ const app = new Vue({
 
             this.status = 'Loading...';
             app.$refs.grid.clear();
-            Server.search(this.store.settings.client_id,
+            Server.search(this.memory.settings.client_id,
                 function (images, pages) {
                     self.web = images;
                     self.pages = pages;
@@ -119,10 +119,10 @@ const app = new Vue({
     },
     created: async function () {
         const self = this;
-        cmd.save = function () { utils.save(self.store) };
-        this.store = utils.load();
+        cmd.save = function () { utils.save(self.memory) };
+        this.memory = utils.load();
 
-        const c = this.store.collections[0] || null;
+        const c = this.memory.collections[0] || null;
         if (c) this.onCollectionSelection(c);
 
         cmd.underdevelopment = function () {
@@ -134,5 +134,5 @@ const app = new Vue({
 
         cmd.images = function () { return self.collection ? self.collection.images: undefined; }
     },
-    mounted: function() { cmd.grid.update(); cmd.settings.import(this.store.settings); }
+    mounted: function() { cmd.grid.update(); cmd.settings.import(this.memory.settings); }
 });
