@@ -14,7 +14,7 @@ simple unsplash desktop wallpaper manager
 
 - for help about `electron-builder` use `build -h` or `electron-builder -h`
 
-> note: electron-builder builds into the `/dist` directory
+> note: `electron-builder` builds into the `/dist` directory
 
 > note: the __below__ build commands are tested on `linux mint 18.3`
 
