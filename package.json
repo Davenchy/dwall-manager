@@ -3,16 +3,9 @@
   "version": "1.0.0",
   "description": "unsplash desktop wallpaper manager",
   "main": "app.js",
-  "scripts": {
-    "build-all": "electron-packager . dwall-manager --all --overwrite --asar --prune --out releases",
-
-    "build-linux64": "electron-packager . dwall-manager --platform linux --arch x64 --overwrite --asar --prune --out releases",
-    "build-linux32": "electron-packager . dwall-manager --platform linux --arch ia32 --overwrite --asar --prune --out releases",
-    "build-mac64": "electron-packager . dwall-manager --platform darwin --arch x64 --overwrite --asar --prune --out releases",
-    "build-win64": "electron-packager . dwall-manager --platform win32 --arch x64 --overwrite --asar --prune --out releases",
-    "build-win32": "electron-packager . dwall-manager --platform win32 --arch ia32 --overwrite --asar --prune --out releases",
-
-    "package-linux64": "electron-installer-debian --src releases/dwall-manager-linux-x64 --dest releases --arch amd64"
+  "build": {
+    "appId": "com.davenchy.dwall-manager",
+    "productName": "Dwall Manager"
   },
   "keywords": [
     "wallpaper",
@@ -29,6 +22,6 @@
   },
   "devDependencies": {
     "electron": "^3.0.4",
-    "electron-packager": "^12.2.0"
+    "electron-builder": "^20.28.4"
   }
 }

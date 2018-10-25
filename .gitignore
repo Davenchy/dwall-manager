@@ -6,6 +6,7 @@ memory.json
 wallpaper.jpg
 .*
 releases
+dist
 test.js
 =======
 # Logs

@@ -4,32 +4,34 @@ simple unsplash desktop wallpaper manager
 
 ## Build From Source Code
 
-- to build from source code
-1) install electron itself: `npm i -D electron`
-2) install electron packager: `npm i -D electron-packager`
+- first install packages and electron itself
 
-- build for all: `npm run build-all`
-- build for win64: `npm run build-win64`
-- build for win32: `npm run build-win32`
-- build for linux64: `npm run build-linux64`
-- build for linux32: `npm run build-linux32`
-- build for mac64: `npm run build-mac64`
+```
+    npm i
+    npm i -D electron
+```
 
-## Create Installer From Build
+- then install electron-builder
 
-- Note: you need to build from source code first then create installer
+`npm i -g electron-builder`
 
-- soon
+- to build for your platform
+
+`build`
+
+- note: electron-builder builds into the '/dist' directory
+- for help use `build -h`
 
 ## Latest Changes
 
-- replaced store keyword with memory
-- replaced store.json file with memory.json
+- fix bugs
+- added electron builder scripts
 
 ## Todo
 
-- add scripts system 0%
+- add scripts system 5%
 - add set random image as a wallpaper 0%
 - add time range for each component [to set random image as a wallpaper] 0%
 - add documentaion 0%
 - add load image from computer button 0%
+- create icon for the app 0%

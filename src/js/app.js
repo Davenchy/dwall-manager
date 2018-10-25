@@ -134,5 +134,5 @@ const app = new Vue({
 
         cmd.images = function () { return self.collection ? self.collection.images: undefined; }
     },
-    mounted: function() { cmd.grid.update(); cmd.settings.import(this.memory.settings); }
+    mounted: function() { if(cmd.grid) { cmd.grid.update(); } cmd.settings.import(this.memory.settings); }
 });
