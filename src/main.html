@@ -11,10 +11,11 @@
 <body>
     <div id="app">
 
-        <x-model ref="model"></x-model>
 
         <x-settings ref="settings"></x-settings>
         <x-scripts ref="scripts"></x-scripts>
+
+        <x-dialog-manager ref="dialogManager"></x-dialog-manager>
 
         <x-imageview ref="imageview">
             <span class="item" title="Set Desktop Wallpaper" @click="cmd.view.setCurrentImageAsDesktopWallpaper()">
@@ -33,19 +34,22 @@
                 <div class="item center selectable col lg-1"
                     style="background-color: #27ae60; color: #f2f2f2;"
                     title="Create new collection"
-                    @click="onCollectionCreate"><div><i class="fas fa-plus-circle"></i><p>Create New</p></div>
+                    @click="onCollectionCreate"><div><i class="fas fa-plus-circle"></i></div>
                 </div>
-                <div class="item center selectable col"
+                <div class="item center selectable col lg-1"
                     style="background-color: #2980b9; color: #f2f2f2; padding: 5px 0; width: 40px;"
                     title="Scripts"
-                    @click="cmd.underdevelopment()"
-                    ><i class="fas fa-code"></i>
+                    @click="cmd.underdevelopment()"><i class="fas fa-code"></i>
                 </div>
-                <div class="item center selectable col"
+                <div class="item center selectable col lg-1"
                     style="background-color: #2d3436; color: #f2f2f2; padding: 5px 0; width: 40px;"
                     title="Settings"
-                    @click="cmd.settings.show()"
-                    ><i class="fas fa-cog"></i>
+                    @click="cmd.settings.show()"><i class="fas fa-cog"></i>
+                </div>
+                <div class="item center selectable col lg-1"
+                    style="background-color: #7329b9; color: #f2f2f2; padding: 5px 0; width: 40px;"
+                    title="About"
+                    @click="cmd.about()"><i class="fas fa-info"></i>
                 </div>
             </div>
             <div
@@ -63,7 +67,6 @@
                     <p>{{c.name}}</p>
             </div>
         </div>
-
 
         <div class="main-view">
             <div v-if="this.collection">
@@ -92,15 +95,28 @@
     <script src="./js/vue.js"></script>
     <!-- ipc object for in app events -->
     <!-- cmd object for in app commands -->
-    <script>const ipc = new Vue(); const cmd = {}; const {shell, ipcRenderer } = require('electron');</script>
+    <script>
+        const ipc = new Vue();
+        const cmd = {};
+        const {shell, ipcRenderer } = require('electron');
+        window.alert = function (text) {
+            cmd.dialog.alert(text);
+        }
+    </script>
     <script src="./js/api.js"></script>
     <script src="./js/downloader.js"></script>
     <script src="./js/desktop.js"></script>
     <script src="./js/utils.js"></script>
+    <script src="./js/test.js"></script>
 
     <script src="./js/components/Image.js"></script>
     <script src="./js/components/Grid.js"></script>
-    <script src="./js/components/Model.js"></script>
+
+    <!-- Dialog -->
+    <script src="./js/components/Dialog/DialogManager.js"></script>
+    <script src="./js/components/Dialog/Dialog.js"></script>
+    <script src="./js/components/Dialog/Element.js"></script>
+
     <script src="./js/components/ImageView.js"></script>
     <script src="./js/components/Settings.js"></script>
     <script src="./js/components/Scripts.js"></script>

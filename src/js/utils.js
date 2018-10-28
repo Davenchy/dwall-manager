@@ -87,17 +87,15 @@ const Server = {
 // for server object dialogs
 function check_internet_dialog() {
     app.status = "Check your internet!";
-    cmd.model({ title: "Check your internet!", showInput: false, positive: 'ok', showNegative: false });
+    alert('Check your internet!');
 }
 function access_key_dialog() {
     app.status = "unsplash user app access key is needed!";
-    cmd.model({
-        title: "Unsplash client access key is needed, go to settings and set it",
-        showInput: false,
-        positive: 'settings',
-        done: (v) => {
-            if (!v) return;
-            cmd.settings.show();
-        }
-    });
+    cmd.dialog.build([
+        { type: 'title', text: 'Unsplash client access key is needed, go to settings and set it', class: 'center title' },
+        { type: 'group', children: [
+            { type: 'button', class: 'blue right', text: 'settings', endPoint: true, action: () => cmd.settings.show() },
+            { type: 'button', class: 'red right', text: 'close', close: true }
+        ]}
+    ]);
 }

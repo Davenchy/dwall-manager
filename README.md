@@ -1,10 +1,15 @@
-# DWall Manager
+# DWall Manager V1.1.0
 simple unsplash desktop wallpaper manager
 
+- DWall Manager V2 is comming soon.
 
 ## Build From Source Code
 
-- install dependencies
+- clone the project
+
+`git clone https://github.com/Davenchy/dwall_manager.git`
+
+- then install dependencies
 
 ```
     npm i
@@ -12,7 +17,7 @@ simple unsplash desktop wallpaper manager
     npm i -D electron-builder
 ```
 
-- for help about `electron-builder` use `build -h` or `electron-builder -h`
+for help about `electron-builder` use `build -h` or `electron-builder -h`
 
 > note: `electron-builder` builds into the `/dist` directory
 
@@ -53,15 +58,32 @@ ____
 
 ## Latest Changes
 
-- fix set wallpaper as desktop wallpaper
+- New Dialog System
+- Added Dialog Builder
+- Added Alert Dialog
+- Added Multi Dialog System
+- Added About button
+- Redirect all links to browser
+- fix unsplash user copyrights bug
 
 ____
 
 ## Todo
 
-- add scripts system 5%
-- add set random image as a wallpaper 0%
-- add time range for each collection [to set random image as a wallpaper] 0%
-- add documentaion 0%
+- Get Ready For Dwall Manager Full Version 2 10%
+
+----
+- New IO System 0%
+- New Settings System 0%
+- Image Manager 0%
+- Scripts Manager 0%
+- Collections Manager 0%
+- Caches Manager 0%
+- Update Download Manager 0%
+
+----
+
+- create set random image as a wallpaper script 0%
+- create documentaion 0%
 - add load image from computer button 0%
 - create icon for the app 0%

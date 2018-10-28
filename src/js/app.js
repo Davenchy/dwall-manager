@@ -26,45 +26,71 @@ const app = new Vue({
             downloader.killGroup('main');
             this.web = [];
             this.pages = null;
-            this.status = '';
             this.collection = c;
+            this.status = '';
+            if(cmd.grid) { cmd.grid.update(); }
         },
         // create new collection
         onCollectionCreate: function () {
-            cmd.model({
-                title: "Collection Name?",
-                value: "New Collection",
-                positive: "create",
-                done: name => {
-                    this.memory.collections.push(utils.initCollection(name));
+            const self = this;
+            cmd.dialog.build({
+                autoKill: false,
+                content: [
+                    { type: 'title', text: 'Collection Name?' },
+                    { type: 'input', value: 'New Collection', placeholder: 'Collection Name', ref: 'name', endPoint: true },
+                    { type: 'group', class: 'clearfix', children: [
+                        { type: 'button', text: 'create', class: 'right', endPoint: true },
+                        { type: 'button', text: 'close', class: 'red right', closeAndKill: true }
+                    ]}
+                ],
+                done: function () {
+                    var name = this.refs.name.value;
+                    if (name === '') return alert('Enter collection name please!');
+                    self.memory.collections.push(utils.initCollection(name));
                     cmd.save();
+                    this.kill();
                 }
             });
         },
         // rename collection
         onCollectionRename: function (c) {
-            cmd.model({
-                title: "Rename Collection",
-                value: c.name,
-                positive: "rename",
-                done: name => {
-                    this.onCollectionSelection(c);
-                    this.collection.name = name;
-                    cmd.save();
+            const self = this;
+            cmd.dialog.build({
+                autoKill: false,
+                content: [
+                    { type: 'title', text: 'Rename Collection' },
+                    { type: 'input', value: c.name, placeholder: 'Collection Name', ref: 'name', endPoint: true },
+                    { type: 'group', class: 'clearfix', children: [
+                        { type: 'button', text: 'create', class: 'right', endPoint: true },
+                        { type: 'button', text: 'close', class: 'red right', closeAndKill: true }
+                    ]},
+                ],
+                done: function () {
+                    const name = this.refs.name.value;
+                    if (name === '') return alert('Enter collection name please!');
+                    if (name !== c.name) {
+                        self.onCollectionSelection(c);
+                        self.collection.name = name;
+                        cmd.save();
+                    }
+                    this.kill();
                 }
             });
         },
         // remove collection
         onCollectionRemove: function (c) {
-            cmd.model({
-                title: 'Remove Collection',
-                showInput: false,
-                positive: 'yes',
-                negative: 'no',
-                done: (v) => {
-                    if (!v) return;
-                    if (this.isCollectionSelected(c.id)) this.collection = null;
-                    this.memory.collections = this.memory.collections.filter(f => c.id !== f.id);
+            const self = this;
+            cmd.dialog.build({
+                content: [
+                    { type: 'title', text: 'Remove Collection' },
+                    { type: 'group', class: 'clearfix', children: [
+                        { type: 'button', text: 'yes', class: 'right', endPoint: true },
+                        { type: 'button', text: 'no', class: 'red right', close: true }
+                    ]},
+                ],
+                done: function () {
+                    if (self.isCollectionSelected(c.id)) self.collection = null;
+                    self.memory.collections = self.memory.collections.filter(f => c.id !== f.id);
                     cmd.save();
                 }
             });
@@ -89,22 +115,33 @@ const app = new Vue({
         DecPage: function () { if (this.page - 1 > 0) this.page--; this.Pager(); },
         // set the page number
         setPage: function () {
+            const self = this;
             // check if results are on the screen
             if (!this.pages) return;
             // when running the app for the first time show login message
             else if (this.login) {
                 // show the help page
             } else {
-                // show dialog to get the page number
-                cmd.model({
-                    title: "Go To Page Number? Pages = " + this.pages,
-                    value: this.page,
-                    positive: "go",
-                    done: v => {
-                        if (v < 1) v = 1;
-                        if (v > this.pages) v = this.pages;
-                        this.page = v;
-                        this.Pager();
+                var list = [];
+                for (let i = 1; i < this.pages + 1; i++) list.push(i)
+                cmd.dialog.build({
+                    content: [
+                        {type: 'title', text: 'Go To Page Number?'},
+                        {type: 'raw', class: 'center flex', children: [
+                            {type: 'label', class: 'col', text: 'Page :'},
+                            {type: 'options', class: 'col', ref: 'page', value: this.page, list}
+                        ]},
+                        {type: 'group', class: 'clearfix', children: [
+                            {type: 'button', text: 'go to page', class: 'right', endPoint: true},
+                            {type: 'button', text: 'close', class: 'red right', close: true}
+                        ]}
+                    ],
+                    done: function () {
+                        var n = this.refs.page.value;
+                        if (n < 1) n = 1;
+                        if (n > self.pages) n = self.pages;
+                        self.page = n;
+                        self.Pager();
                     }
                 });
             }
@@ -125,14 +162,29 @@ const app = new Vue({
         const c = this.memory.collections[0] || null;
         if (c) this.onCollectionSelection(c);
 
-        cmd.underdevelopment = function () {
-            cmd.model({
-                title: 'This feature is under development',
-                showInput: false, showNegative: false, positive: 'ok'
-            });
+        cmd.underdevelopment = function () { alert('This feature is under development'); }
+        cmd.about = function () {
+            cmd.dialog.build([
+                { type: 'title', text: 'About' },
+                { type: 'label', text: 'DWall Manager V1.1.0' },
+                { type: 'label', text: 'Created by Davenchy' },
+                { type: 'html', html: `
+                    <a class="btn" style="background-color: transparent; color: #222;"
+                        target="_blank" href="https://github.com/Davenchy/dwall_manager">
+                            <i class="fab fa-github-alt"></i>
+                            <p style= ' margin-left: 5px; display: inline-block;'>
+                                Open In Github.com
+                            </p>
+                    </a>
+                `},
+                { type: 'button', text: 'close', class: 'red right', close: true }
+            ]);
         }
-
         cmd.images = function () { return self.collection ? self.collection.images: undefined; }
     },
-    mounted: function() { if(cmd.grid) { cmd.grid.update(); } cmd.settings.import(this.memory.settings); }
+    mounted: function() {
+        if(cmd.grid) { cmd.grid.update(); }
+        cmd.settings.import(this.memory.settings);
+        cmd.test();
+    }
 });

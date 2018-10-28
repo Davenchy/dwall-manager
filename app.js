@@ -4,7 +4,7 @@ const fs = require('fs');
 const name = 'memory.json';
 const wp = 'wallpaper.jpg';
 
-const { app, BrowserWindow, ipcMain, dialog } = electron;
+const { app, BrowserWindow, ipcMain, dialog, shell } = electron;
 
 let win;
 
@@ -12,7 +12,13 @@ app.on('ready', function () {
     win = new BrowserWindow({ show: false, minWidth: 950, minHeight: 400, center: true });
     win.maximize()
     win.loadFile('./src/main.html');
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
+
+    win.webContents.on('new-window', function(e, url) {
+        e.preventDefault();
+        shell.openExternal(url);
+    });
+
     win.show();
 
     win.on('closed', function () {
