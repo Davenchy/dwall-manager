@@ -1,7 +1,7 @@
 # DWall Manager V1.1.0
 Simple unsplash desktop wallpaper manager
 
-(Download)[https://github.com/Davenchy/dwall_manager/releases]
+[Download] (https://github.com/Davenchy/dwall_manager/releases)
 
 ## Build From Source Code
 
